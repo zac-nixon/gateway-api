@@ -21,9 +21,10 @@ metadata:
 spec:
   gatewayClassName: "{GATEWAY_CLASS_NAME}"
   listeners:
-  - name: http
-    port: 80
-    protocol: HTTP
+  - name: https
+    port: 443
+    protocol: HTTPS
+    hostname: sample.com
     allowedRoutes:
       namespaces:
         from: Same

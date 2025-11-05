@@ -5,31 +5,36 @@ metadata:
   namespace: gateway-conformance-infra
 spec:
   gatewayClassName: "{GATEWAY_CLASS_NAME}"
+  infrastructure:
+      parametersRef:
+        kind: LoadBalancerConfiguration
+        name: foo
+        group: gateway.k8s.aws
   listeners:
   - name: listener-1
-    port: 80
-    protocol: HTTP
+    port: 443
+    protocol: HTTPS
     allowedRoutes:
       namespaces:
         from: Same
     hostname: bar.com
   - name: listener-2
-    port: 80
-    protocol: HTTP
+    port: 443
+    protocol: HTTPS
     allowedRoutes:
       namespaces:
         from: Same
     hostname: foo.bar.com
   - name: listener-3
-    port: 80
-    protocol: HTTP
+    port: 443
+    protocol: HTTPS
     allowedRoutes:
       namespaces:
         from: Same
     hostname: "*.bar.com"
   - name: listener-4
-    port: 80
-    protocol: HTTP
+    port: 443
+    protocol: HTTPS
     allowedRoutes:
       namespaces:
         from: Same

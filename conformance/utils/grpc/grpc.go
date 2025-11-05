@@ -18,7 +18,9 @@ package grpc
 
 import (
 	"context"
+	"crypto/tls"
 	"fmt"
+	"google.golang.org/grpc/credentials"
 	"sort"
 	"strings"
 	"testing"
@@ -27,7 +29,6 @@ import (
 	"github.com/stretchr/testify/require"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/codes"
-	"google.golang.org/grpc/credentials/insecure"
 	"google.golang.org/grpc/metadata"
 	"google.golang.org/grpc/status"
 
@@ -151,15 +152,24 @@ func (er *ExpectedResponse) GetTestCaseName(i int) string {
 }
 
 func (c *DefaultClient) ensureConnection(address string, req *RequestMetadata) error {
-	if c.Conn != nil {
-		return nil
-	}
+	//if c.Conn != nil {
+	//	return nil
+	//}
 	var err error
-	dialOpts := []grpc.DialOption{grpc.WithTransportCredentials(insecure.NewCredentials())}
+
+	tlsConfig := &tls.Config{
+		InsecureSkipVerify: true, // This skips all certificate verification, including expiry.
+	}
+
+	dialOpts := []grpc.DialOption{}
 	if req != nil && req.Authority != "" {
 		dialOpts = append(dialOpts, grpc.WithAuthority(req.Authority))
 	}
+	dialOpts = append(dialOpts, grpc.WithAuthority("sample.com"))
 
+	dialOpts = append(dialOpts, grpc.WithTransportCredentials(credentials.NewTLS(tlsConfig)))
+
+	fmt.Printf("12343---->%+v\n", address)
 	c.Conn, err = grpc.NewClient(address, dialOpts...)
 	if err != nil {
 		c.Conn = nil
@@ -234,6 +244,7 @@ func (c *DefaultClient) Close() {
 }
 
 func compareResponse(expected *ExpectedResponse, response *Response) error {
+	fmt.Printf("Got response! %+v\n", *response)
 	if expected.Response.Code != response.Code {
 		return fmt.Errorf("expected status code to be %s (%d), but got %s (%d)", expected.Response.Code.String(), expected.Response.Code, response.Code.String(), response.Code)
 	}
@@ -276,12 +287,23 @@ func MakeRequestAndExpectEventuallyConsistentResponse(t *testing.T, c Client, ti
 	}
 	defer c.Close()
 	sendRPC := func(elapsed time.Duration) bool {
-		resp, err := c.SendRPC(t, gwAddr, expected, timeoutConfig.MaxTimeToConsistency-elapsed)
+
+		addrSplit := strings.Split(gwAddr, ":")
+		httpsAddr := fmt.Sprintf("%s:443", addrSplit[0])
+		fmt.Printf("=====>%+v\n", httpsAddr)
+
+		resp, err := c.SendRPC(t, httpsAddr, expected, timeoutConfig.MaxTimeToConsistency-elapsed)
 		if err != nil {
 			tlog.Logf(t, "Failed to send RPC, not ready yet: %v (after %v)", err, elapsed)
 			return false
 		}
+
+		if err == nil {
+			fmt.Printf("GOOOOTOTOTOTOT\n")
+		}
+
 		if err := compareResponse(&expected, resp); err != nil {
+			fmt.Printf("Response expectation failed for request: %v  not ready yet: %v (after %v)", expected, err, elapsed)
 			tlog.Logf(t, "Response expectation failed for request: %v  not ready yet: %v (after %v)", expected, err, elapsed)
 			return false
 		}
