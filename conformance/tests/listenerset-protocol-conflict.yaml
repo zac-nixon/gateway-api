@@ -48,7 +48,7 @@ spec:
   # The following listener should be rejected since it conflicts with the gateway listener
   - name: protocol-conflict-with-gateway-listener
     port: 80
-    protocol: TCP
+    protocol: HTTPS
     allowedRoutes:
       namespaces:
         from: All
@@ -77,7 +77,7 @@ spec:
   # The following listener should be rejected since it conflicts with the gateway listener
   - name: protocol-conflict-with-gateway-listener
     port: 80
-    protocol: TCP
+    protocol: HTTPS
     allowedRoutes:
       namespaces:
         from: All
@@ -105,7 +105,7 @@ spec:
   # The following listener should be rejected since it conflicts with another listenerSet's listener
   - name: protocol-conflict-with-listener-set-listener
     port: 80
-    protocol: TCP
+    protocol: HTTPS
     allowedRoutes:
       namespaces:
         from: All
@@ -126,7 +126,7 @@ spec:
   # The following listener should be rejected since it conflicts with another listenerSet's listener
   - name: protocol-conflict-with-listener-set-listener
     port: 80
-    protocol: TCP
+    protocol: HTTPS
     allowedRoutes:
       namespaces:
         from: All

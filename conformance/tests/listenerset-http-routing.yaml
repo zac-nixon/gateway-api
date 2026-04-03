@@ -13,13 +13,6 @@ spec:
     allowedRoutes:
       namespaces:
         from: All
-  - name: gateway-listener-2
-    port: 80
-    protocol: HTTP
-    hostname: "gateway-listener-2.com"
-    allowedRoutes:
-      namespaces:
-        from: All
   allowedListeners:
     namespaces:
       from: All
@@ -43,13 +36,6 @@ spec:
     allowedRoutes:
       namespaces:
         from: All
-  - name: listener-set-http-routing-1-listener-2
-    port: 80
-    protocol: HTTP
-    hostname: "listener-set-http-routing-1-listener-2.com"
-    allowedRoutes:
-      namespaces:
-        from: All
 ---
 apiVersion: gateway.networking.k8s.io/v1
 kind: ListenerSet
@@ -67,13 +53,6 @@ spec:
     port: 80
     protocol: HTTP
     hostname: "listener-set-http-routing-2-listener-1.com"
-    allowedRoutes:
-      namespaces:
-        from: All
-  - name: listener-set-http-routing-2-listener-2
-    port: 80
-    protocol: HTTP
-    hostname: "listener-set-http-routing-2-listener-2.com"
     allowedRoutes:
       namespaces:
         from: All

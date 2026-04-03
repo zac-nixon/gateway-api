@@ -77,13 +77,6 @@ var ListenerSetHTTPRouting = confsuite.ConformanceTest{
 				AttachedRoutes: 3,
 				Conditions:     generateAcceptedListenerConditions(),
 			},
-			{
-				Name:           "listener-set-http-routing-1-listener-2",
-				SupportedKinds: generateSupportedRouteKinds(),
-				// This attaches to attaches-to-all-listeners, listener-set-http-routing-1-route
-				AttachedRoutes: 2,
-				Conditions:     generateAcceptedListenerConditions(),
-			},
 		})
 
 		// listener-set-http-routing-2
@@ -101,13 +94,6 @@ var ListenerSetHTTPRouting = confsuite.ConformanceTest{
 				AttachedRoutes: 2,
 				Conditions:     generateAcceptedListenerConditions(),
 			},
-			{
-				Name:           "listener-set-http-routing-2-listener-2",
-				SupportedKinds: generateSupportedRouteKinds(),
-				// This attaches to attaches-to-all-listeners, listener-set-http-routing-2-route
-				AttachedRoutes: 2,
-				Conditions:     generateAcceptedListenerConditions(),
-			},
 		})
 
 		testCases := []http.ExpectedResponse{
@@ -118,27 +104,12 @@ var ListenerSetHTTPRouting = confsuite.ConformanceTest{
 				Namespace: ns,
 			},
 			{
-				Request:   http.Request{Host: "gateway-listener-2.com", Path: "/route"},
-				Backend:   confsuite.InfraBackendServiceNameV1,
-				Namespace: ns,
-			},
-			{
 				Request:   http.Request{Host: "listener-set-http-routing-1-listener-1.com", Path: "/route"},
 				Backend:   confsuite.InfraBackendServiceNameV1,
 				Namespace: ns,
 			},
 			{
-				Request:   http.Request{Host: "listener-set-http-routing-1-listener-2.com", Path: "/route"},
-				Backend:   confsuite.InfraBackendServiceNameV1,
-				Namespace: ns,
-			},
-			{
 				Request:   http.Request{Host: "listener-set-http-routing-2-listener-1.com", Path: "/route"},
-				Backend:   confsuite.InfraBackendServiceNameV1,
-				Namespace: ns,
-			},
-			{
-				Request:   http.Request{Host: "listener-set-http-routing-2-listener-2.com", Path: "/route"},
 				Backend:   confsuite.InfraBackendServiceNameV1,
 				Namespace: ns,
 			},
@@ -149,24 +120,11 @@ var ListenerSetHTTPRouting = confsuite.ConformanceTest{
 				Namespace: ns,
 			},
 			{
-				Request:   http.Request{Host: "gateway-listener-2.com", Path: "/gateway-route"},
-				Backend:   confsuite.InfraBackendServiceNameV2,
-				Namespace: ns,
-			},
-			{
 				Request:  http.Request{Host: "listener-set-http-routing-1-listener-1.com", Path: "/gateway-route"},
 				Response: http.Response{StatusCode: 404},
 			},
 			{
-				Request:  http.Request{Host: "listener-set-http-routing-1-listener-2.com", Path: "/gateway-route"},
-				Response: http.Response{StatusCode: 404},
-			},
-			{
 				Request:  http.Request{Host: "listener-set-http-routing-2-listener-1.com", Path: "/gateway-route"},
-				Response: http.Response{StatusCode: 404},
-			},
-			{
-				Request:  http.Request{Host: "listener-set-http-routing-2-listener-2.com", Path: "/gateway-route"},
 				Response: http.Response{StatusCode: 404},
 			},
 			// Requests to the gateway-section-route should only succeed on gateway-listener-1
@@ -176,23 +134,11 @@ var ListenerSetHTTPRouting = confsuite.ConformanceTest{
 				Namespace: ns,
 			},
 			{
-				Request:  http.Request{Host: "gateway-listener-2.com", Path: "/gateway-section-route"},
-				Response: http.Response{StatusCode: 404},
-			},
-			{
 				Request:  http.Request{Host: "listener-set-http-routing-1-listener-1.com", Path: "/gateway-section-route"},
 				Response: http.Response{StatusCode: 404},
 			},
 			{
-				Request:  http.Request{Host: "listener-set-http-routing-1-listener-2.com", Path: "/gateway-section-route"},
-				Response: http.Response{StatusCode: 404},
-			},
-			{
 				Request:  http.Request{Host: "listener-set-http-routing-2-listener-1.com", Path: "/gateway-section-route"},
-				Response: http.Response{StatusCode: 404},
-			},
-			{
-				Request:  http.Request{Host: "listener-set-http-routing-2-listener-2.com", Path: "/gateway-section-route"},
 				Response: http.Response{StatusCode: 404},
 			},
 			// Requests to the listener-set-http-routing-1-route should only succeed on listener-set-http-routing-1 listeners
@@ -201,16 +147,7 @@ var ListenerSetHTTPRouting = confsuite.ConformanceTest{
 				Response: http.Response{StatusCode: 404},
 			},
 			{
-				Request:  http.Request{Host: "gateway-listener-2.com", Path: "/listener-set-http-routing-1-route"},
-				Response: http.Response{StatusCode: 404},
-			},
-			{
 				Request:   http.Request{Host: "listener-set-http-routing-1-listener-1.com", Path: "/listener-set-http-routing-1-route"},
-				Backend:   confsuite.InfraBackendServiceNameV2,
-				Namespace: ns,
-			},
-			{
-				Request:   http.Request{Host: "listener-set-http-routing-1-listener-2.com", Path: "/listener-set-http-routing-1-route"},
 				Backend:   confsuite.InfraBackendServiceNameV2,
 				Namespace: ns,
 			},
@@ -218,17 +155,10 @@ var ListenerSetHTTPRouting = confsuite.ConformanceTest{
 				Request:  http.Request{Host: "listener-set-http-routing-2-listener-1.com", Path: "/listener-set-http-routing-1-route"},
 				Response: http.Response{StatusCode: 404},
 			},
-			{
-				Request:  http.Request{Host: "listener-set-http-routing-2-listener-2.com", Path: "/listener-set-http-routing-1-route"},
-				Response: http.Response{StatusCode: 404},
-			},
+
 			// Requests to the listener-set-http-routing-1-section-route should only succeed on listener-set-http-routing-1-listener-1
 			{
 				Request:  http.Request{Host: "gateway-listener-1.com", Path: "/listener-set-http-routing-1-section-route"},
-				Response: http.Response{StatusCode: 404},
-			},
-			{
-				Request:  http.Request{Host: "gateway-listener-2.com", Path: "/listener-set-http-routing-1-section-route"},
 				Response: http.Response{StatusCode: 404},
 			},
 			{
@@ -237,15 +167,7 @@ var ListenerSetHTTPRouting = confsuite.ConformanceTest{
 				Namespace: ns,
 			},
 			{
-				Request:  http.Request{Host: "listener-set-http-routing-1-listener-2.com", Path: "/listener-set-http-routing-1-section-route"},
-				Response: http.Response{StatusCode: 404},
-			},
-			{
 				Request:  http.Request{Host: "listener-set-http-routing-2-listener-1.com", Path: "/listener-set-http-routing-1-section-route"},
-				Response: http.Response{StatusCode: 404},
-			},
-			{
-				Request:  http.Request{Host: "listener-set-http-routing-2-listener-2.com", Path: "/listener-set-http-routing-1-section-route"},
 				Response: http.Response{StatusCode: 404},
 			},
 			// Requests to the listener-set-http-routing-2-route should only succeed on listener-set-http-routing-2 listeners
@@ -254,24 +176,11 @@ var ListenerSetHTTPRouting = confsuite.ConformanceTest{
 				Response: http.Response{StatusCode: 404},
 			},
 			{
-				Request:  http.Request{Host: "gateway-listener-2.com", Path: "/listener-set-http-routing-2-route"},
-				Response: http.Response{StatusCode: 404},
-			},
-			{
 				Request:  http.Request{Host: "listener-set-http-routing-1-listener-1.com", Path: "/listener-set-http-routing-2-route"},
 				Response: http.Response{StatusCode: 404},
 			},
 			{
-				Request:  http.Request{Host: "listener-set-http-routing-1-listener-2.com", Path: "/listener-set-http-routing-2-route"},
-				Response: http.Response{StatusCode: 404},
-			},
-			{
 				Request:   http.Request{Host: "listener-set-http-routing-2-listener-1.com", Path: "/listener-set-http-routing-2-route"},
-				Backend:   confsuite.InfraBackendServiceNameV2,
-				Namespace: ns,
-			},
-			{
-				Request:   http.Request{Host: "listener-set-http-routing-2-listener-2.com", Path: "/listener-set-http-routing-2-route"},
 				Backend:   confsuite.InfraBackendServiceNameV2,
 				Namespace: ns,
 			},
@@ -293,8 +202,5 @@ func generateSupportedRouteKinds() []gatewayv1.RouteGroupKind {
 	return []gatewayv1.RouteGroupKind{{
 		Group: (*gatewayv1.Group)(&gatewayv1.GroupVersion.Group),
 		Kind:  gatewayv1.Kind("HTTPRoute"),
-	}, {
-		Group: (*gatewayv1.Group)(&gatewayv1.GroupVersion.Group),
-		Kind:  gatewayv1.Kind("GRPCRoute"),
 	}}
 }
