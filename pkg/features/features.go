@@ -59,6 +59,10 @@ var (
 			Insert(HTTPRouteExtendedFeatures.UnsortedList()...).
 			Insert(TLSRouteCoreFeatures.UnsortedList()...).
 			Insert(TLSRouteExtendedFeatures.UnsortedList()...).
+			Insert(TCPRouteCoreFeatures.UnsortedList()...).
+			Insert(TCPRouteExtendedFeatures.UnsortedList()...).
+			Insert(UDPRouteCoreFeatures.UnsortedList()...).
+			Insert(UDPRouteExtendedFeatures.UnsortedList()...).
 			Insert(MeshCoreFeatures.UnsortedList()...).
 			Insert(MeshExtendedFeatures.UnsortedList()...).
 			Insert(GRPCRouteCoreFeatures.UnsortedList()...).

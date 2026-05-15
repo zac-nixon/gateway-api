@@ -36,7 +36,6 @@ type GatewayV1Interface interface {
 	ListenerSetsGetter
 	ReferenceGrantsGetter
 	TLSRoutesGetter
-	UDPRoutesGetter
 }
 
 // GatewayV1Client is used to interact with features provided by the gateway.networking.k8s.io group.
@@ -74,10 +73,6 @@ func (c *GatewayV1Client) ReferenceGrants(namespace string) ReferenceGrantInterf
 
 func (c *GatewayV1Client) TLSRoutes(namespace string) TLSRouteInterface {
 	return newTLSRoutes(c, namespace)
-}
-
-func (c *GatewayV1Client) UDPRoutes(namespace string) UDPRouteInterface {
-	return newUDPRoutes(c, namespace)
 }
 
 // NewForConfig creates a new GatewayV1Client for the given config.

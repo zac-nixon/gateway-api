@@ -1,5 +1,5 @@
 /*
-Copyright The Kubernetes Authors.
+Copyright 2024 The Kubernetes Authors.
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -17,22 +17,22 @@ limitations under the License.
 package features
 
 // -----------------------------------------------------------------------------
-// Features - UDPRoute Conformance (Extended)
+// Features - UDPRoute Conformance (Core)
 // -----------------------------------------------------------------------------
 
 const (
-	// This option indicates support for UDPRoute
+	// SupportUDPRoute option indicates support for UDPRoute.
 	SupportUDPRoute FeatureName = "UDPRoute"
 )
 
 // UDPRouteFeature contains metadata for the UDPRoute feature.
 var UDPRouteFeature = Feature{
 	Name:    SupportUDPRoute,
-	Channel: FeatureChannelStandard,
+	Channel: FeatureChannelExperimental,
 }
 
-// UDPRouteExtendedFeatures includes all SupportedFeatures needed to be conformant with
+// UDPRouteCoreFeatures includes all SupportedFeatures needed to be conformant with
 // the UDPRoute resource.
-var UDPRouteExtendedFeatures = map[FeatureName]Feature{
+var UDPRouteFeatures = map[FeatureName]Feature{
 	SupportUDPRoute: UDPRouteFeature,
 }
